@@ -24,10 +24,7 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "start": "npm run start",
-    "build": "npm run build",
-    "test": "npm run test",
-    "eject": "npm run eject"
+    "start": "npm run start"
   },
   "eslintConfig": {
     "extends": [
