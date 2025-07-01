@@ -10,7 +10,7 @@
     "cookie-universal": "^2.2.2",
     "cra-template": "1.2.0",
     "framer-motion": "^12.6.3",
-    "i18next": "^25.2.1",
+    "i18next": "^14.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-i18next": "^14.0.0",
