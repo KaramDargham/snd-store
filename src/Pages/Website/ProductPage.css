@@ -1,0 +1,6 @@
+.swiper-button-prev, .swiper-button-next{
+    color: rgb(255 142 38);
+}
+.swiper-pagination-bullet-active{
+    background-color: rgb(255 142 38);
+}

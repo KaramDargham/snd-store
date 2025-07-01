@@ -1,0 +1,12 @@
+.popup-content {
+    width: 60%;
+}
+.popup-overlay {
+    background: #5050504f;
+}
+
+@media (max-width:590px) {
+    .popup-content {
+    width: 100%;
+}
+}
