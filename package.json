@@ -50,8 +50,4 @@
   "devDependencies": {
     "tailwindcss": "^3.4.17"
   }
-  "engines": {
-  "node": "18.x",
-  "npm": "9.x"
-}
 }
