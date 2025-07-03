@@ -118,7 +118,7 @@ const ProductPage = () => {
                   <img
                     className="md:w-full h-[50vh] w-20"
                     alt={`${product.name} - ${index + 1}`}
-                    src={`http://localhost:5000${image}`}
+                    src={`https://store-3t4b.onrender.com${image}`}
                   />
                 </SwiperSlide>
               ))}
@@ -137,7 +137,7 @@ const ProductPage = () => {
                   <img
                     className="w-full h-[25vh]"
                     alt={`${product.name} - ${index + 1}`}
-                    src={`http://localhost:5000${image}`}
+                    src={`https://store-3t4b.onrender.com${image}`}
                   />
                 </SwiperSlide>
               ))}
