@@ -52,7 +52,7 @@ const Shop = () => {
                       className="rounded-t-lg p-8 w-64 h-52"
                       src={
                         product.imagesUrl !== null
-                          ? `http://localhost:5000${product.imagesUrl[0]}`
+                          ? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`
                           : ""
                       }
                       alt={product.name}
