@@ -71,7 +71,7 @@ export default function EditCategory() {
           <h4 className="text-2xl font-semibold mb-4 text-center text-secondaryColor">{t("edit-category")}</h4>
           <form onSubmit={handleSubmit}>
             <div className="mb-3 w-full">
-                <img src={`http://localhost:5000${category.imageUrl}`} className="w-1/2" alt={category.name} />
+                <img src={`https://www.shop.sndgroup.net${category.imageUrl}`} className="w-1/2" alt={category.name} />
               <label className=" text-sm font-medium text-gray-700">
                 {t("name")}
               </label>
