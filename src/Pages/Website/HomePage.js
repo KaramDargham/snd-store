@@ -126,7 +126,7 @@ export default function HomePage() {
                         <div className="image">
                           <div className="flex justify-center">
                             <img
-                              src={`http://localhost:5000${category.imageUrl}`}
+                              src={`https://store-3t4b.onrender.com${category.imageUrl}`}
                               alt={category.name}
                               className="md:w-14 md:h-14 w-20 h-20"
                             />
@@ -169,7 +169,7 @@ export default function HomePage() {
                             className="rounded-t-lg p-8 w-64 h-52"
                             src={
                               product.imagesUrl !== null
-                                ? `http://localhost:5000${product.imagesUrl[0]}`
+                                ? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`
                                 : ""
                             }
                             alt={product.name}
@@ -216,7 +216,7 @@ export default function HomePage() {
                               className="rounded-t-lg p-8 w-64 h-52"
                               src={
                                 product.imagesUrl !== null
-                                  ? `http://localhost:5000${product.imagesUrl[0]}`
+                                  ? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`
                                   : ""
                               }
                               alt={product.name}
