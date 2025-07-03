@@ -71,7 +71,7 @@ export default function EditProduct() {
           <form onSubmit={handleSubmit} className="flex justify-center items-center">
             <div className="max-w-[400px]">
               <div className="">
-              <img src={product.imagesUrl !== null? `http://localhost:5000${product.imagesUrl[0]}`:""} className="w-full" alt={product.name} />
+              <img src={product.imagesUrl !== null? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`:""} className="w-full" alt={product.name} />
               </div>
             <div className="mb-3 w-full">
  
