@@ -72,7 +72,7 @@ export default function ShowCategories() {
           <tbody>
             {categories.length!==0 &&categories.map((category,i)=><tr className="border-b hover:bg-gray-50 ">
               <td className="p-3">
-                <img src={`http://localhost:5000${category.imageUrl}`} alt={category.name} className="w-8" />
+                <img src={`https://store-3t4b.onrender.com${category.imageUrl}`} alt={category.name} className="w-8" />
               </td>
               <td className="p-3">
                 {category.name}
@@ -103,7 +103,7 @@ export default function ShowCategories() {
               <h3 className="p-3">
                Page Url: {category.url}
               </h3>
-              <img src={`http://localhost:5000${category.imageUrl}`} alt={category.name} className="w-20"/>
+              <img src={`https://www.shop.sndgroup.net${category.imageUrl}`} alt={category.name} className="w-20"/>
               <h3 className="p-3 text-center">
                 <Link to={`/dashboard/categories/${category._id}`} className="px-3 py-1 text-sm text-white bg-blue-500 rounded hover:bg-blue-600">
                   Edit
