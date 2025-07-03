@@ -45,8 +45,17 @@ export default function EditProduct() {
   async function handleSubmit(e){
     e.preventDefault();
     setLoading(true)
+    const formData = new FormData();
+    formData.append("name", product.name);
+    formData.append("description", product.description);
+    formData.append("price", product.price);
+    formData.append("category", product.category);
+    formData.append("stock", product.stock);
+    for (let i = 0; i < product.image.length; i++) {
+      formData.append("images", product.image[i]);
+    }
     try{
-   await axios.put(`https://store-3t4b.onrender.com/products/${id}`,product,{
+   await axios.put(`https://store-3t4b.onrender.com/products/${id}`,formData,{
     headers: {
         Authorization: accessToken ? accessToken : '',
         "Content-Type": 'multipart/form-data',
@@ -135,8 +144,15 @@ export default function EditProduct() {
                 type="file"
                 name="image"
                 onChange={handleImageChange}
-                
+                multiple // Allow multiple selection
+                accept="image/*" // Only accept images
+                required
               />
+              {product.image.length > 0 && (
+                <div className="mt-2 text-sm text-gray-500">
+                  {t("selected")}: {product.image.length} {t("files")}
+                </div>
+              )}
            </div>
             <div className="mt-8">
               <button
