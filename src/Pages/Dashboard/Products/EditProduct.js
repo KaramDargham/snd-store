@@ -8,7 +8,9 @@ import { useTranslation } from "react-i18next";
 
 export default function EditProduct() {
   const id = window.location.pathname.split("/")[3];
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState({
+    image: [],
+  });
   const [notFound,setNotFound] = useState(false)
   const cookie = Cookie();
   const accessToken = cookie.get("access");
