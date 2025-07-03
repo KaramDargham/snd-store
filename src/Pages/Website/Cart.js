@@ -158,7 +158,7 @@ export default function Cart() {
                       className="justify-between rounded-lg bg-gray-50 mb-2 p-6 shadow-md sm:flex sm:justify-start"
                     >
                       <img
-                        src={`http://localhost:5000${item.imageUrl}`}
+                        src={`https://store-3t4b.onrender.com{item.imageUrl}`}
                         alt="product-image"
                         className="w-32 rounded-lg sm:w-40"
                       />
