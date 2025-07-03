@@ -46,7 +46,7 @@ export default function Categories(){
                   <div className="p-4">
                     <div className="image ">
                       <div className="flex justify-center">
-                        <img src={`http://localhost:5000${category.imageUrl}`} alt={category.name} className="w-24 h-24 " />
+                        <img src={`https://store-3t4b.onrender.com${category.imageUrl}`} alt={category.name} className="w-24 h-24 " />
                       </div>
                     </div>
                     <div className="text-info p-4 text-center">
