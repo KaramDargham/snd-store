@@ -204,7 +204,7 @@ export default function HomePage() {
                       </div>
                     </Link>
                   ) : (
-                    <div className="w-full md:flex col-span-12 md:col-span-8 gap-3">
+                    <div className="w-full md:flex col-span-12 md:col-span-6 gap-3">
                       <Link
                         to={`/products/${product._id}`}
                         className="bg-white shadow-md rounded-lg dark:bg-gray-800 dark:border-gray-700 w-full  flex justify-center items-center"
