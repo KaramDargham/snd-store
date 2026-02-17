@@ -57,6 +57,11 @@ export default function EditProduct() {
   useEffect(() => {
     getProduct();
   }, []);
+  const API_BASE = "https://store-3t4b.onrender.com";
+  const resolveImageUrl = (image) => {
+    if (!image) return "";
+    return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+  };
 
   function fillForm(e) {
     const { name, value } = e.target;
@@ -115,7 +120,7 @@ export default function EditProduct() {
                 {product.imagesUrl.map((url, index) => (
                   <img
                     key={index}
-                    src={`https://store-3t4b.onrender.com${url}`}
+                    src={resolveImageUrl(url)}
                     alt={`Product ${index + 1}`}
                     className="w-24 h-24 object-cover rounded-md"
                   />
