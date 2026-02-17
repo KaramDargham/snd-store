@@ -10,6 +10,11 @@ export default function Categories(){
     const [loading,setLoading] = useState(true)
     const [error,setError] = useState(false)
     const [categories,setCategories] = useState([])
+  const API_BASE = "https://store-3t4b.onrender.com";
+  const resolveImageUrl = (image) => {
+    if (!image) return "";
+    return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+  };
   async function getCategories() {
     try{
       let res = await axios.get("https://store-3t4b.onrender.com/categories");
@@ -46,7 +51,7 @@ export default function Categories(){
                   <div className="p-4">
                     <div className="image ">
                       <div className="flex justify-center">
-                        <img src={`https://store-3t4b.onrender.com${category.imageUrl}`} alt={category.name} className="w-24 h-24 " />
+                        <img src={resolveImageUrl(category.imageUrl)} alt={category.name} className="w-24 h-24 " />
                       </div>
                     </div>
                     <div className="text-info p-4 text-center">
