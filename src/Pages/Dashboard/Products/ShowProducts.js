@@ -49,6 +49,11 @@ export default function ShowProducts() {
   useEffect(() => {
     getCategories();
   }, []);
+  const API_BASE = "https://store-3t4b.onrender.com";
+  const resolveImageUrl = (image) => {
+    if (!image) return "";
+    return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+  };
   return loading ? (
     <Loading />
   ) : (
@@ -74,7 +79,7 @@ export default function ShowProducts() {
           <tbody>
             {products.length!==0 &&products.map((product,i)=><tr className="border-b hover:bg-gray-50 ">
               <td className="p-3">
-                <img src={product.imagesUrl !== null? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`:""} alt={product.name} className="w-8" />
+                <img src={product.imagesUrl && product.imagesUrl.length>0 ? resolveImageUrl(product.imagesUrl[0]) : ""} alt={product.name} className="w-8" />
               </td>
               <td className="p-3">
                 {product.name}
@@ -105,7 +110,7 @@ export default function ShowProducts() {
         <div className="w-full flex justify-center items-center">
           <div className="">
             {products.length!==0 &&products.map((product,i)=><div className="border-b hover:bg-gray-50 ">
-              <img src={product.imagesUrl !== null? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`:""} alt={product.name} className="w-52 pt-5"/>
+              <img src={product.imagesUrl && product.imagesUrl.length>0 ? resolveImageUrl(product.imagesUrl[0]) : ""} alt={product.name} className="w-52 pt-5"/>
               <h3 className="p-3 mt-3">
                {t("name")}: {product.name}
               </h3>
