@@ -70,6 +70,11 @@ export default function EditProduct() {
 
   function handleImageChange(e) {
     const files = e.target.files ? Array.from(e.target.files) : [];
+    // enforce the same maximum of 4 images that the backend expects
+    if (files.length > 4) {
+      alert(t('max_4_images')); // you can define this translation key
+      return;
+    }
     setProduct({ ...product, image: files });
   }
 
@@ -92,7 +97,7 @@ export default function EditProduct() {
       await axios.put(`https://store-3t4b.onrender.com/products/${id}`, formData, {
         headers: {
           Authorization: accessToken ? accessToken : "",
-          "Content-Type": "multipart/form-data",
+          // leaving out Content-Type to let axios handle boundary
         },
       });
       nav("/dashboard/products");
@@ -223,6 +228,20 @@ export default function EditProduct() {
               {product.image?.length > 0 && (
                 <div className="mt-2 text-sm text-gray-500">
                   {t("selected")}: {product.image.length} {t("files")}
+                </div>
+              )}
+
+              {/* preview newly selected files */}
+              {product.image?.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {product.image.map((file, idx) => (
+                    <img
+                      key={idx}
+                      src={URL.createObjectURL(file)}
+                      alt={file.name}
+                      className="w-24 h-24 object-cover rounded-md"
+                    />
+                  ))}
                 </div>
               )}
             </div>
