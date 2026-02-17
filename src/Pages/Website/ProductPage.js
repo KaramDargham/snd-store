@@ -52,6 +52,12 @@ const ProductPage = () => {
       setLoading(false);
     }
   }
+
+  const API_BASE = "https://store-3t4b.onrender.com";
+  const resolveImageUrl = (image) => {
+    if (!image) return "";
+    return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+  };
   async function AddToCart() {
     setLoading(true);
     if(userRole ==="admin"){
@@ -113,12 +119,12 @@ const ProductPage = () => {
               modules={[Navigation, Pagination]}
               className="mySwiper"
             >
-              {product.imagesUrl.map((image, index) => (
+                  {product.imagesUrl.map((image, index) => (
                 <SwiperSlide className="flex justify-center" key={index}>
                   <img
                     className="md:w-full h-[50vh] w-20"
                     alt={`${product.name} - ${index + 1}`}
-                    src={`https://store-3t4b.onrender.com${image}`}
+                        src={resolveImageUrl(image)}
                   />
                 </SwiperSlide>
               ))}
@@ -137,7 +143,7 @@ const ProductPage = () => {
                   <img
                     className="w-full h-[25vh]"
                     alt={`${product.name} - ${index + 1}`}
-                    src={`https://store-3t4b.onrender.com${image}`}
+                    src={resolveImageUrl(image)}
                   />
                 </SwiperSlide>
               ))}
