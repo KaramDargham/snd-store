@@ -47,6 +47,12 @@ export default function HomePage() {
     getProducts();
   }, []);
 
+  const API_BASE = "https://store-3t4b.onrender.com";
+  const resolveImageUrl = (image) => {
+    if (!image) return "";
+    return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+  };
+
   return loading ? (
     <Loading />
   ) : (
@@ -126,7 +132,7 @@ export default function HomePage() {
                         <div className="image">
                           <div className="flex justify-center">
                             <img
-                              src={`https://store-3t4b.onrender.com${category.imageUrl}`}
+                              src={resolveImageUrl(category.imageUrl)}
                               alt={category.name}
                               className="md:w-14 md:h-14 w-20 h-20"
                             />
@@ -168,8 +174,8 @@ export default function HomePage() {
                   <img
                     className="rounded-t-lg p-8 w-64 h-52"
                     src={
-                      product.imagesUrl !== null
-                        ? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`
+                      product.imagesUrl && product.imagesUrl.length > 0
+                        ? resolveImageUrl(product.imagesUrl[0])
                         : ""
                     }
                     alt={product.name}
