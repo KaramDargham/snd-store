@@ -12,6 +12,13 @@ const Shop = () => {
     const [loading,setLoading] = useState(true)
     const [error,setError] = useState(false)
     const { t } = useTranslation();
+    
+    const API_BASE = "https://store-3t4b.onrender.com";
+    const resolveImageUrl = (image) => {
+      if (!image) return "";
+      // if it's already an absolute URL, return as-is; otherwise prepend base
+      return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+    };
     async function getProducts() {
     try {
       let res = await axios.get("https://store-3t4b.onrender.com/products");
@@ -50,11 +57,7 @@ const Shop = () => {
                   <div className="flex justify-center">
                     <img
                       className="rounded-t-lg p-8 w-64 h-52"
-                      src={
-                        product.imagesUrl !== null
-                          ? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`
-                          : ""
-                      }
+                      src={product.imagesUrl?.length > 0 ? resolveImageUrl(product.imagesUrl[0]) : ""}
                       alt={product.name}
                     />
                   </div>
