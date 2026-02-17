@@ -102,7 +102,12 @@ export default function EditProduct() {
       });
       nav("/dashboard/products");
     } catch (err) {
-      console.log(err);
+      console.log('submit error', err);
+      if (err.response) {
+        console.log('server response', err.response.data);
+        const msg = err.response.data.error || 'Server error';
+        alert(msg + (err.response.data.stack ? '\n' + err.response.data.stack : ''));
+      }
     } finally {
       setLoading(false);
     }
