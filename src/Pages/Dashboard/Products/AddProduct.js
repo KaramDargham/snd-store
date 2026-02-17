@@ -58,8 +58,12 @@ export default function AddProduct() {
     setProduct({ ...product, [name]: value });
   }
   function handleImageChange(e) {
-    const file = e.target.files;
-    setProduct({ ...product, image: file });
+    const files = e.target.files ? Array.from(e.target.files) : [];
+    if (files.length > 4) {
+      alert(t('max_4_images')); // translation key
+      return;
+    }
+    setProduct({ ...product, image: files });
   }
 
   async function handleSubmit(e) {
@@ -79,7 +83,8 @@ export default function AddProduct() {
       await axios.post("https://store-3t4b.onrender.com/products", formData, {
         headers: {
           Authorization: accessToken ? accessToken : "",
-          "Content-Type": "multipart/form-data",
+          // do not set Content-Type manually; axios will add the correct
+          // multipart boundary automatically
         },
       });
       setLoading(false);
@@ -179,6 +184,19 @@ export default function AddProduct() {
               {product.image.length > 0 && (
                 <div className="mt-2 text-sm text-gray-500">
                   {t("selected")}: {product.image.length} {t("files")}
+                </div>
+              )}
+
+              {product.image.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {Array.from(product.image).map((file, idx) => (
+                    <img
+                      key={idx}
+                      src={URL.createObjectURL(file)}
+                      alt={file.name}
+                      className="w-24 h-24 object-cover rounded-md"
+                    />
+                  ))}
                 </div>
               )}
             </div>
