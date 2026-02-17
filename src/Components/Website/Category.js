@@ -9,6 +9,12 @@ import { useTranslation } from "react-i18next";
 export default function Category() {
   const categoryId = window.location.pathname.split("/").slice(-1).toString();
    const { t } = useTranslation();
+   
+  const API_BASE = "https://store-3t4b.onrender.com";
+  const resolveImageUrl = (image) => {
+    if (!image) return "";
+    return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+  };
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(false);
@@ -65,11 +71,7 @@ export default function Category() {
                         <div className="flex justify-center">
                           <img
                             className="rounded-t-lg p-8 w-64 h-52 "
-                            src={
-                              product.imagesUrl !== null
-                                ? `https://store-3t4b.onrender.com${product.imagesUrl[0]}`
-                                : ""
-                            }
+                            src={product.imagesUrl?.length > 0 ? resolveImageUrl(product.imagesUrl[0]) : ""}
                             alt={product.name}
                           />
                         </div>
