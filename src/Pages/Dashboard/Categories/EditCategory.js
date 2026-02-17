@@ -33,6 +33,11 @@ export default function EditCategory() {
   useEffect(()=>{
     getCategory()
   },[])
+  const API_BASE = "https://store-3t4b.onrender.com";
+  const resolveImageUrl = (image) => {
+    if (!image) return "";
+    return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+  };
   function fillForm(e){
     let name = e.target.name
     let value = e.target.value
@@ -71,7 +76,7 @@ export default function EditCategory() {
           <h4 className="text-2xl font-semibold mb-4 text-center text-secondaryColor">{t("edit-category")}</h4>
           <form onSubmit={handleSubmit}>
             <div className="mb-3 w-full">
-                <img src={`https://www.shop.sndgroup.net${category.imageUrl}`} className="w-1/2" alt={category.name} />
+                <img src={resolveImageUrl(category.imageUrl)} className="w-1/2" alt={category.name} />
               <label className=" text-sm font-medium text-gray-700">
                 {t("name")}
               </label>
