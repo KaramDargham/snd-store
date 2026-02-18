@@ -17,7 +17,7 @@ export default function ShowCategories() {
     try {
       let res = await axios.get("https://store-3t4b.onrender.com/categories", {
         headers: {
-          Authorization: accessToken ? `Bearer ${accessToken}` : "",
+          Authorization: accessToken ? accessToken : "",
         },
       });
       setCategories(res.data);
@@ -32,7 +32,7 @@ export default function ShowCategories() {
      try{
       let res = await axios.delete(`https://store-3t4b.onrender.com/categories/${id}`, {
         headers: {
-          Authorization: accessToken ? `Bearer ${accessToken}` : "",
+          Authorization: accessToken ? accessToken : "",
         },
       });
       let deleteFromArray = categories.filter((category,i)=>category._id!== id)
