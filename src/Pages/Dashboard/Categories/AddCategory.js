@@ -11,6 +11,7 @@ export default function AddCategory() {
     url:"",
     image:null
   });
+  const [preview, setPreview] = useState("");
     const { t, i18n } = useTranslation();
   const cookie = Cookie();
   const accessToken = cookie.get("access");
@@ -25,7 +26,20 @@ export default function AddCategory() {
     function handleImageChange(e) {
         const file = e.target.files[0];
         setCategory({ ...category, image: file });
+        if (file) {
+          const url = URL.createObjectURL(file);
+          setPreview(url);
+        } else {
+          setPreview("");
+        }
     }
+
+  // cleanup preview URL when component unmounts or image changes
+  React.useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   async function handleSubmit(e){
     e.preventDefault();
@@ -93,6 +107,11 @@ export default function AddCategory() {
                 onChange={handleImageChange}
                 required
               />
+              {preview && (
+                <div className="mt-4">
+                  <img src={preview} alt="preview" className="w-32 h-32 object-cover rounded-md" />
+                </div>
+              )}
            </div>
             <div className="mt-8">
               <button
