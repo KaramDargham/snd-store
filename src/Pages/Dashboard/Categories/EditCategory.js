@@ -1,16 +1,23 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Cookie from "cookie-universal";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import NotFound from "../../../Components/NotFound/NotFound"
 import Loading from "../../../Components/Loading/Loading";
 import { useTranslation } from "react-i18next";
 
 export default function EditCategory() {
-  const id = window.location.pathname.split("/")[3];
-  const [category, setCategory] = useState({});
+  const params = useParams();
+  const id = params.id || window.location.pathname.split("/")[3];
+  const [category, setCategory] = useState({
+    name: "",
+    url: "",
+    imagesUrl: [],
+    image: [],
+  });
   const [notFound,setNotFound] = useState(false)
-  const [newPreview, setNewPreview] = useState("");
+  const [newPreview, setNewPreview] = useState([]);
   const cookie = Cookie();
   const accessToken = cookie.get("access");
   const [loading,setLoading] = useState(true)
@@ -20,8 +27,16 @@ export default function EditCategory() {
  async function getCategory(){
     setLoading(true)
      try{
-      let res = await axios.get(`https://store-3t4b.onrender.com/categories/${id}`)
-      setCategory(res.data)
+      let res = await axios.get(`https://store-3t4b.onrender.com/categories/${id}`, {
+        headers: { Authorization: accessToken ? `Bearer ${accessToken}` : "" },
+      })
+      // ensure shape
+      setCategory({
+        name: res.data.name || "",
+        url: res.data.url || "",
+        imagesUrl: res.data.imagesUrl || res.data.imageUrl ? (res.data.imagesUrl || [res.data.imageUrl]).filter(Boolean) : [],
+        image: [],
+      })
      }
      catch{
         setNotFound(true)
@@ -44,19 +59,19 @@ export default function EditCategory() {
     setCategory({...category,[name]:value})
     }
     function handleImageChange(e) {
-        const file = e.target.files[0];
-        setCategory({ ...category, image: file });
-        if (file) {
-          const url = URL.createObjectURL(file);
-          setNewPreview(url);
-        } else {
-          setNewPreview("");
+        const files = e.target.files ? Array.from(e.target.files) : [];
+        if (files.length > 4) {
+          alert(t('max_4_images'));
+          return;
         }
+        setCategory({ ...category, image: files });
+        const urls = files.map((f) => URL.createObjectURL(f));
+        setNewPreview(urls);
     }
 
   React.useEffect(() => {
     return () => {
-      if (newPreview) URL.revokeObjectURL(newPreview);
+      newPreview.forEach((u) => URL.revokeObjectURL(u));
     };
   }, [newPreview]);
 
@@ -67,11 +82,14 @@ export default function EditCategory() {
       const formData = new FormData();
       if (category.name) formData.append('name', category.name);
       if (category.url) formData.append('url', category.url);
-      if (category.image && category.image instanceof File) formData.append('image', category.image);
+      // append multiple new images
+      if (category.image && Array.isArray(category.image)) {
+        category.image.forEach((file) => formData.append('images', file));
+      }
 
       await axios.put(`https://store-3t4b.onrender.com/categories/${id}`, formData, {
         headers: {
-          Authorization: accessToken ? accessToken : '',
+          Authorization: accessToken ? `Bearer ${accessToken}` : '',
         },
       });
       setLoading(false);
@@ -92,10 +110,19 @@ export default function EditCategory() {
           <h4 className="text-2xl font-semibold mb-4 text-center text-secondaryColor">{t("edit-category")}</h4>
           <form onSubmit={handleSubmit}>
             <div className="mb-3 w-full">
-                {newPreview ? (
-                  <img src={newPreview} className="w-1/2" alt={category.name} />
+                {/* show newly selected previews if any, otherwise show existing images */}
+                {newPreview.length > 0 ? (
+                  <div className="mb-2 flex gap-2 flex-wrap">
+                    {newPreview.map((p, idx) => (
+                      <img key={idx} src={p} className="w-32 h-32 object-cover rounded-md" alt={`new-${idx}`} />
+                    ))}
+                  </div>
                 ) : (
-                  <img src={resolveImageUrl(category.imageUrl)} className="w-1/2" alt={category.name} />
+                  <div className="mb-2 flex gap-2 flex-wrap">
+                    {category.imagesUrl?.map((url, idx) => (
+                      <img key={idx} src={resolveImageUrl(url)} className="w-32 h-32 object-cover rounded-md" alt={category.name} />
+                    ))}
+                  </div>
                 )}
               <label className=" text-sm font-medium text-gray-700">
                 {t("name")}
@@ -131,6 +158,8 @@ export default function EditCategory() {
                 type="file"
                 name="image"
                 onChange={handleImageChange}
+                multiple
+                accept="image/*"
               />
            </div>
             <div className="mt-8">
