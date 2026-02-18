@@ -19,9 +19,8 @@ export default function EditCategory() {
  async function getCategory(){
     setLoading(true)
      try{
-        let res = await axios.get("https://store-3t4b.onrender.com/categories")
-        let getCategoryById = res.data.find((category)=> category._id === id)
-        setCategory(getCategoryById)
+      let res = await axios.get(`https://store-3t4b.onrender.com/categories/${id}`)
+      setCategory(res.data)
      }
      catch{
         setNotFound(true)
@@ -52,14 +51,18 @@ export default function EditCategory() {
     e.preventDefault();
     setLoading(true)
     try{
-   await axios.put(`https://store-3t4b.onrender.com/categories/${id}`,category,{
-    headers: {
-        Authorization: accessToken ? accessToken : '',
-        "Content-Type": 'multipart/form-data',
-    },
-   })
-   setLoading(false)
-     nav("/dashboard/categories")
+      const formData = new FormData();
+      if (category.name) formData.append('name', category.name);
+      if (category.url) formData.append('url', category.url);
+      if (category.image && category.image instanceof File) formData.append('image', category.image);
+
+      await axios.put(`https://store-3t4b.onrender.com/categories/${id}`, formData, {
+        headers: {
+          Authorization: accessToken ? accessToken : '',
+        },
+      });
+      setLoading(false);
+      nav("/dashboard/categories");
       
     }
     catch(err){
