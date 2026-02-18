@@ -31,14 +31,18 @@ export default function AddCategory() {
     e.preventDefault();
     setLoading(true)
     try{
-   await axios.post("https://store-3t4b.onrender.com/products",category,{
-    headers: {
-        Authorization: accessToken ? accessToken : '',
-        "Content-Type": 'multipart/form-data',
-    },
-   })
-   setLoading(false)
-     nav("/dashboard/products")
+      const formData = new FormData();
+      formData.append("name", category.name);
+      formData.append("url", category.url);
+      if (category.image) formData.append("image", category.image);
+
+      await axios.post("https://store-3t4b.onrender.com/categories", formData, {
+        headers: {
+          Authorization: accessToken ? accessToken : '',
+        },
+      });
+      setLoading(false);
+      nav("/dashboard/categories");
       
     }
     catch(err){
