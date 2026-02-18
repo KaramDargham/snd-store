@@ -14,10 +14,10 @@ export default function EditCategory() {
     name: "",
     url: "",
     imagesUrl: [],
-    image: [],
+    image: null,
   });
   const [notFound,setNotFound] = useState(false)
-  const [newPreview, setNewPreview] = useState([]);
+  const [newPreview, setNewPreview] = useState("");
   const cookie = Cookie();
   const accessToken = cookie.get("access");
   const [loading,setLoading] = useState(true)
@@ -28,14 +28,14 @@ export default function EditCategory() {
     setLoading(true)
      try{
       let res = await axios.get(`https://store-3t4b.onrender.com/categories/${id}`, {
-        headers: { Authorization: accessToken ? `Bearer ${accessToken}` : "" },
+        headers: { Authorization: accessToken ? accessToken : "" },
       })
       // ensure shape
       setCategory({
         name: res.data.name || "",
         url: res.data.url || "",
-        imagesUrl: res.data.imagesUrl || res.data.imageUrl ? (res.data.imagesUrl || [res.data.imageUrl]).filter(Boolean) : [],
-        image: [],
+        imagesUrl: res.data.imageUrl ? [res.data.imageUrl] : [],
+        image: null,
       })
      }
      catch{
@@ -59,14 +59,10 @@ export default function EditCategory() {
     setCategory({...category,[name]:value})
     }
     function handleImageChange(e) {
-        const files = e.target.files ? Array.from(e.target.files) : [];
-        if (files.length > 4) {
-          alert(t('max_4_images'));
-          return;
-        }
-        setCategory({ ...category, image: files });
-        const urls = files.map((f) => URL.createObjectURL(f));
-        setNewPreview(urls);
+        const file = e.target.files && e.target.files[0] ? e.target.files[0] : null;
+        setCategory({ ...category, image: file });
+        if (file) setNewPreview(URL.createObjectURL(file));
+        else setNewPreview("");
     }
 
   React.useEffect(() => {
@@ -83,13 +79,13 @@ export default function EditCategory() {
       if (category.name) formData.append('name', category.name);
       if (category.url) formData.append('url', category.url);
       // append multiple new images
-      if (category.image && Array.isArray(category.image)) {
-        category.image.forEach((file) => formData.append('images', file));
+      if (category.image) {
+        formData.append('image', category.image);
       }
 
       await axios.put(`https://store-3t4b.onrender.com/categories/${id}`, formData, {
         headers: {
-          Authorization: accessToken ? `Bearer ${accessToken}` : '',
+          Authorization: accessToken ? accessToken : '',
         },
       });
       setLoading(false);
