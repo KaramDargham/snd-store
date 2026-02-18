@@ -10,6 +10,7 @@ export default function EditCategory() {
   const id = window.location.pathname.split("/")[3];
   const [category, setCategory] = useState({});
   const [notFound,setNotFound] = useState(false)
+  const [newPreview, setNewPreview] = useState("");
   const cookie = Cookie();
   const accessToken = cookie.get("access");
   const [loading,setLoading] = useState(true)
@@ -45,7 +46,19 @@ export default function EditCategory() {
     function handleImageChange(e) {
         const file = e.target.files[0];
         setCategory({ ...category, image: file });
+        if (file) {
+          const url = URL.createObjectURL(file);
+          setNewPreview(url);
+        } else {
+          setNewPreview("");
+        }
     }
+
+  React.useEffect(() => {
+    return () => {
+      if (newPreview) URL.revokeObjectURL(newPreview);
+    };
+  }, [newPreview]);
 
   async function handleSubmit(e){
     e.preventDefault();
@@ -79,7 +92,11 @@ export default function EditCategory() {
           <h4 className="text-2xl font-semibold mb-4 text-center text-secondaryColor">{t("edit-category")}</h4>
           <form onSubmit={handleSubmit}>
             <div className="mb-3 w-full">
-                <img src={resolveImageUrl(category.imageUrl)} className="w-1/2" alt={category.name} />
+                {newPreview ? (
+                  <img src={newPreview} className="w-1/2" alt={category.name} />
+                ) : (
+                  <img src={resolveImageUrl(category.imageUrl)} className="w-1/2" alt={category.name} />
+                )}
               <label className=" text-sm font-medium text-gray-700">
                 {t("name")}
               </label>
