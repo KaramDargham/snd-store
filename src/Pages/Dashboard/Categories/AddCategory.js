@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookie from "cookie-universal";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../Components/Loading/Loading";
@@ -7,11 +7,11 @@ import { useTranslation } from "react-i18next";
 
 export default function AddCategory() {
   const [category, setCategory] = useState({
-    name:"",
-    url:"",
-    image:null
+    name: "",
+    url: "",
+    image: [],
   });
-  const [preview, setPreview] = useState("");
+  const [preview, setPreview] = useState([]);
     const { t, i18n } = useTranslation();
   const cookie = Cookie();
   const accessToken = cookie.get("access");
@@ -24,18 +24,25 @@ export default function AddCategory() {
     setCategory({...category,[name]:value})
     }
     function handleImageChange(e) {
-        const file = e.target.files[0];
-        setCategory({ ...category, image: file });
-        if (file) {
-          const url = URL.createObjectURL(file);
-          setPreview(url);
-        } else {
-          setPreview("");
+        const files = e.target.files ? Array.from(e.target.files) : [];
+        if (files.length > 4) {
+          alert(t('max_4_images'));
+          return;
         }
-    }
+        setCategory({ ...category, image: files });
+        // create previews
+        const urls = files.map((f) => URL.createObjectURL(f));
+        setPreview(urls);
+        }
+
+  useEffect(() => {
+    return () => {
+      preview.forEach((u) => URL.revokeObjectURL(u));
+    };
+  }, [preview]);
 
   // cleanup preview URL when component unmounts or image changes
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       if (preview) URL.revokeObjectURL(preview);
     };
@@ -72,7 +79,6 @@ export default function AddCategory() {
         <div className="w-full p-6">
           <h4 className="text-2xl font-semibold mb-4 text-center text-secondaryColor">{t("add-category")}</h4>
           <form onSubmit={handleSubmit}>
-            <div className="mb-3 w-full">
               <label className=" text-sm font-medium text-gray-700">
                 {t("name")}
               </label>
@@ -83,7 +89,6 @@ export default function AddCategory() {
                 onChange={fillForm}
                 required
               />
-           </div>
            <div className="mb-3">
               <label className="block text-sm font-medium text-gray-700">
                 {t("page-url")}
@@ -121,8 +126,8 @@ export default function AddCategory() {
                 {t("add")}
               </button>
             </div>
-          </form>
-        </div>
+            </form>
+      </div>
       </div>
     </section>
   );
