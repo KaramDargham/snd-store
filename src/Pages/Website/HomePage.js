@@ -132,7 +132,7 @@ export default function HomePage() {
                         <div className="image">
                           <div className="flex justify-center">
                             <img
-                              src={resolveImageUrl(category.imageUrl)}
+                              src={category.imageUrl ? resolveImageUrl(category.imageUrl) : ""}
                               alt={category.name}
                               className="md:w-14 md:h-14 w-20 h-20"
                             />
