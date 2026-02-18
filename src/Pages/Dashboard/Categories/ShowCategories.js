@@ -52,7 +52,10 @@ export default function ShowCategories() {
   const API_BASE = "https://store-3t4b.onrender.com";
   const resolveImageUrl = (image) => {
     if (!image) return "";
-    return /^https?:\/\//i.test(image) ? image : `${API_BASE}${image}`;
+    // handle either an array (like products.imagesUrl) or a single string
+    const img = Array.isArray(image) ? image[0] : image;
+    if (!img) return "";
+    return /^https?:\/\//i.test(img) ? img : `${API_BASE}${img}`;
   };
   return loading ? (
     <Loading />
